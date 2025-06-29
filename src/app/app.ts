@@ -1,12 +1,13 @@
 import { Component } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
+import { MatButtonModule } from '@angular/material/button';
 
 @Component({
   selector: 'ngx-root',
-  imports: [RouterOutlet],
+  imports: [RouterOutlet, MatButtonModule],
   template: `
-    <h1>Welcome to {{title}}!</h1>
-
+    <h1>Welcome to {{ title }}!</h1>
+    <a mat-flat-button >Testing</a>
     <router-outlet />
   `,
   styles: [],
