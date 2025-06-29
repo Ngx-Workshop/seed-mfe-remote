@@ -6,7 +6,7 @@ import { MatButtonModule } from '@angular/material/button';
   selector: 'ngx-root',
   imports: [RouterOutlet, MatButtonModule],
   template: `
-    <h1>Welcome to {{ title }}!</h1>
+    <h1>Welcome to {{ title }} Testing Change!</h1>
     <a mat-flat-button >Testing</a>
     <router-outlet />
   `,
