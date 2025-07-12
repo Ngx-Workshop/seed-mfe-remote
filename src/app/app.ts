@@ -15,3 +15,6 @@ import { MatButtonModule } from '@angular/material/button';
 export class App {
   protected title = 'ngx-seed-mfe';
 }
+
+// 👇 **IMPORTANT FOR DYMANIC LOADING**
+export default App;
