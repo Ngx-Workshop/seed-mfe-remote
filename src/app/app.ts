@@ -2,11 +2,11 @@ import { Component } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 
 @Component({
-  selector: 'ngx-root',
+  selector: 'ngx-seed-mfe',
   imports: [MatButtonModule],
   template: `
-    <h1>Welcome to {{ title }} Testing Change!</h1>
-    <a mat-flat-button >Testing</a>
+    <h1>Welcome to {{ title }}!</h1>
+    <a mat-flat-button>Angular Material Installed</a>
   `,
   styles: [],
 })
