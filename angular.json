@@ -3,7 +3,7 @@
   "version": 1,
   "newProjectRoot": "projects",
   "projects": {
-    "ngx-seed-mfe": {
+    "seed-mfe-remote": {
       "projectType": "application",
       "schematics": {
         "@schematics/angular:component": {
@@ -30,7 +30,7 @@
             ],
             "styles": ["src/styles.scss"],
             "main": "src/main.ts",
-            "outputPath": "dist/ngx-seed-mfe",
+            "outputPath": "dist/seed-mfe-remote",
             "index": "src/index.html",
             "extraWebpackConfig": "webpack.config.js",
             "commonChunk": false
@@ -64,11 +64,11 @@
           "builder": "ngx-build-plus:dev-server",
           "configurations": {
             "production": {
-              "buildTarget": "ngx-seed-mfe:build:production",
+              "buildTarget": "seed-mfe-remote:build:production",
               "extraWebpackConfig": "webpack.prod.config.js"
             },
             "development": {
-              "buildTarget": "ngx-seed-mfe:build:development"
+              "buildTarget": "seed-mfe-remote:build:development"
             }
           },
           "defaultConfiguration": "development",

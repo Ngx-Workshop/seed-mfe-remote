@@ -1,4 +1,4 @@
-name: Deploy Ngx-Seed-MFE to DO Droplet
+name: Deploy Seed MFE Remote to DO Droplet
 
 on:
   push:
@@ -29,8 +29,8 @@ jobs:
           host: ${{ secrets.DROPLET_IP }}
           username: root
           key: ${{ secrets.SSH_PRIVATE_KEY }}
-          source: "dist/ngx-seed-mfe/*"
-          target: "/opt/ngx-angular-shell/remotes/ngx-seed-mfe/"
+          source: 'dist/seed-mfe-remote/*'
+          target: '/opt/mfe-remotes/seed-mfe-remote/'
           strip_components: 2
 
       - name: SSH and reload Nginx (optional)
