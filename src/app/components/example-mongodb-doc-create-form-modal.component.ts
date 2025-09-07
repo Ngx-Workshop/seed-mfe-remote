@@ -47,116 +47,113 @@ export type ExampleFormDialogData = {
           ? 'Create Example Doc'
           : 'Edit Example Doc'
       }}
-      <header>
-        <mat-dialog-content>
-          <form class="form" [formGroup]="form">
+    </header>
+    <mat-dialog-content>
+      <form class="form" [formGroup]="form">
+        <mat-form-field appearance="outline" class="full">
+          <mat-label>Name</mat-label>
+          <input matInput formControlName="name" required />
+          @if(form.controls.name.hasError('required')) {
+
+          <mat-error>Name is required</mat-error>
+          } @if(form.controls.name.hasError('maxlength')) {
+
+          <mat-error>Too long</mat-error>
+          }
+        </mat-form-field>
+
+        <mat-form-field appearance="outline" class="full">
+          <mat-label>Type</mat-label>
+          <mat-select formControlName="type" required>
+            <mat-option value="SOME_ENUM">Some Enum</mat-option>
+            <mat-option value="SOME_OTHER_ENUM"
+              >Some Other Enum</mat-option
+            >
+          </mat-select>
+          @if(form.controls.type.hasError('required')) {
+          <mat-error>Type is required</mat-error>
+          }
+        </mat-form-field>
+
+        <mat-form-field appearance="outline" class="full">
+          <mat-label>Description</mat-label>
+          <textarea
+            matInput
+            formControlName="description"
+            rows="4"
+          ></textarea>
+          <mat-hint>Optional</mat-hint>
+        </mat-form-field>
+
+        <mat-checkbox formControlName="archived"
+          >Archived</mat-checkbox
+        >
+
+        <div class="address-section">
+          <h4>Address Information (Optional)</h4>
+          <div
+            formGroupName="exampleMongodbDocObject"
+            class="address-form"
+          >
             <mat-form-field appearance="outline" class="full">
-              <mat-label>Name</mat-label>
-              <input matInput formControlName="name" required />
-              @if(form.controls.name.hasError('required')) {
-
-              <mat-error>Name is required</mat-error>
-              } @if(form.controls.name.hasError('maxlength')) {
-
-              <mat-error>Too long</mat-error>
-              }
-            </mat-form-field>
-
-            <mat-form-field appearance="outline" class="full">
-              <mat-label>Type</mat-label>
-              <mat-select formControlName="type" required>
-                <mat-option value="SOME_ENUM">Some Enum</mat-option>
-                <mat-option value="SOME_OTHER_ENUM"
-                  >Some Other Enum</mat-option
-                >
-              </mat-select>
-              @if(form.controls.type.hasError('required')) {
-              <mat-error>Type is required</mat-error>
-              }
-            </mat-form-field>
-
-            <mat-form-field appearance="outline" class="full">
-              <mat-label>Description</mat-label>
-              <textarea
-                matInput
-                formControlName="description"
-                rows="4"
-              ></textarea>
+              <mat-label>Street</mat-label>
+              <input matInput formControlName="street" />
               <mat-hint>Optional</mat-hint>
             </mat-form-field>
 
-            <mat-checkbox formControlName="archived"
-              >Archived</mat-checkbox
-            >
+            <div class="row">
+              <mat-form-field appearance="outline" class="city">
+                <mat-label>City</mat-label>
+                <input matInput formControlName="city" />
+              </mat-form-field>
 
-            <div class="address-section">
-              <h4>Address Information (Optional)</h4>
-              <div
-                formGroupName="exampleMongodbDocObject"
-                class="address-form"
-              >
-                <mat-form-field appearance="outline" class="full">
-                  <mat-label>Street</mat-label>
-                  <input matInput formControlName="street" />
-                  <mat-hint>Optional</mat-hint>
-                </mat-form-field>
+              <mat-form-field appearance="outline" class="state">
+                <mat-label>State</mat-label>
+                <input matInput formControlName="state" />
+              </mat-form-field>
 
-                <div class="row">
-                  <mat-form-field appearance="outline" class="city">
-                    <mat-label>City</mat-label>
-                    <input matInput formControlName="city" />
-                  </mat-form-field>
-
-                  <mat-form-field appearance="outline" class="state">
-                    <mat-label>State</mat-label>
-                    <input matInput formControlName="state" />
-                  </mat-form-field>
-
-                  <mat-form-field appearance="outline" class="zip">
-                    <mat-label>ZIP</mat-label>
-                    <input matInput formControlName="zip" />
-                  </mat-form-field>
-                </div>
-              </div>
+              <mat-form-field appearance="outline" class="zip">
+                <mat-label>ZIP</mat-label>
+                <input matInput formControlName="zip" />
+              </mat-form-field>
             </div>
-          </form>
-        </mat-dialog-content>
-        <mat-dialog-actions align="end">
-          <div class="actions">
-            <button mat-button type="button" (click)="close()">
-              Cancel
-            </button>
-            <button
-              mat-flat-button
-              color="primary"
-              type="submit"
-              [disabled]="form.invalid || submitting"
-              (click)="onSubmit()"
-            >
-              {{ data.mode === 'create' ? 'Create' : 'Save' }}
-            </button>
           </div>
-        </mat-dialog-actions>
-      </header>
-    </header>
+        </div>
+      </form>
+    </mat-dialog-content>
+    <mat-dialog-actions align="end">
+      <div class="actions">
+        <button mat-button type="button" (click)="close()">
+          Cancel
+        </button>
+        <button
+          mat-flat-button
+          color="primary"
+          type="submit"
+          [disabled]="form.invalid || submitting"
+          (click)="onSubmit()"
+        >
+          {{ data.mode === 'create' ? 'Create' : 'Save' }}
+        </button>
+      </div>
+    </mat-dialog-actions>
   `,
   styles: [
     `
       :host {
         .form {
-          width: 480px;
-          max-width: 90vw;
-          display: grid;
-          gap: 16px;
+          display: flex;
+          padding: 0 1.125rem;
+          gap: 0.625rem;
+          flex-direction: column;
         }
         .full {
           width: 100%;
         }
         .address-section {
-          border: 1px solid #e0e0e0;
+          border: 1px solid var(--mat-sys-secondary);
           border-radius: 4px;
           padding: 16px;
-          background-color: #fafafa;
         }
         .address-section h4 {
           margin: 0 0 16px 0;

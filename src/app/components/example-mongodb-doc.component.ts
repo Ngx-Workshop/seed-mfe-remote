@@ -51,11 +51,6 @@ import { ExampleMongodbDocDto } from '@tmdjr/seed-service-nestjs-contracts';
       </mat-card-header>
 
       <mat-card-content>
-        @if (doc.description) {
-        <p class="desc">
-          {{ doc.description }}
-        </p>
-        }
         <div class="meta">
           <code>ID:</code> {{ doc._id }}
           <button
@@ -67,6 +62,16 @@ import { ExampleMongodbDocDto } from '@tmdjr/seed-service-nestjs-contracts';
             <mat-icon>content_copy</mat-icon>
           </button>
         </div>
+
+        @if (doc.description) {
+        <p class="desc">
+          {{ doc.description }}
+        </p>
+        } @if(doc.exampleMongodbDocObject) {
+        <div class="address">
+          <pre><code>{{ doc.exampleMongodbDocObject | json }}</code></pre>
+        </div>
+        }
       </mat-card-content>
 
       <mat-card-actions align="end">
@@ -120,6 +125,10 @@ import { ExampleMongodbDocDto } from '@tmdjr/seed-service-nestjs-contracts';
       }
       .mat-mdc-card-header {
         display: block;
+      }
+      pre {
+        color: var(--mat-sys-on-primary-container);
+        background: var(--mat-sys-primary-container);
       }
     `,
   ],
