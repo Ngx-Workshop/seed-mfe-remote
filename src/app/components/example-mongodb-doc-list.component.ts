@@ -70,7 +70,7 @@ import { ExampleMongodbDocComponent } from './example-mongodb-doc.component';
         </mat-form-field>
         <button
           mat-flat-button
-          color="primary"
+          class="add-btn"
           (click)="openCreate()"
         >
           <mat-icon>add</mat-icon> New
@@ -91,16 +91,21 @@ import { ExampleMongodbDocComponent } from './example-mongodb-doc.component';
     <div class="empty">
       <mat-icon>inbox</mat-icon>
       <p>No matching documents</p>
-      <button
-        mat-stroked-button
-        color="primary"
-        (click)="openCreate()"
-      >
-        <mat-icon>add</mat-icon> Create one
+      <button mat-flat-button color="primary" (click)="openCreate()">
+        <mat-icon>add</mat-icon> New
       </button>
     </div>
     }
 
+    <button
+      matFab
+      (click)="openCreate()"
+      class="add-fab"
+      matTooltip="Refresh list"
+      aria-label="Refresh"
+    >
+      <mat-icon>add</mat-icon>
+    </button>
     <button
       matFab
       (click)="reload()"
@@ -128,17 +133,16 @@ import { ExampleMongodbDocComponent } from './example-mongodb-doc.component';
         padding: 2rem;
         margin-bottom: 6rem;
       }
+      @media (max-width: 768px) {
+        .list {
+          padding: 0.5rem;
+        }
+      }
       .grid {
         display: grid;
         grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
         gap: 16px;
         margin-top: 1rem;
-      }
-
-      @media (max-width: 768px) {
-        .list {
-          padding: 0.5rem;
-        }
       }
       .empty {
         opacity: 0.7;
@@ -164,6 +168,21 @@ import { ExampleMongodbDocComponent } from './example-mongodb-doc.component';
         bottom: 48px;
         right: 20px;
         z-index: 1000;
+        &.add-fab {
+          bottom: 124px;
+          display: none;
+        }
+      }
+      @media (max-width: 628px) {
+        .controls {
+          justify-content: center;
+        }
+        .add-btn {
+          display: none;
+        }
+        button[matFab].add-fab {
+          display: block;
+        }
       }
     `,
   ],

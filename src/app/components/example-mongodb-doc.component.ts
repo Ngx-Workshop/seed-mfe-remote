@@ -10,6 +10,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
 import { MatChipsModule } from '@angular/material/chips';
 import { MatIconModule } from '@angular/material/icon';
+import { MatMenuModule } from '@angular/material/menu';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { ExampleMongodbDocDto } from '@tmdjr/seed-service-nestjs-contracts';
 
@@ -22,6 +23,7 @@ import { ExampleMongodbDocDto } from '@tmdjr/seed-service-nestjs-contracts';
     MatIconModule,
     MatTooltipModule,
     MatChipsModule,
+    MatMenuModule,
   ],
   template: `
     <mat-card>
@@ -30,6 +32,14 @@ import { ExampleMongodbDocDto } from '@tmdjr/seed-service-nestjs-contracts';
           <span class="title-text" [matTooltip]="doc.name">{{
             doc.name
           }}</span>
+
+          <button
+            mat-icon-button
+            [matMenuTriggerFor]="menu"
+            aria-label="More actions"
+          >
+            <mat-icon>more_vert</mat-icon>
+          </button>
         </mat-card-title>
         <mat-card-subtitle>
           <mat-chip-set>
@@ -73,26 +83,18 @@ import { ExampleMongodbDocDto } from '@tmdjr/seed-service-nestjs-contracts';
         </div>
         }
       </mat-card-content>
-
-      <mat-card-actions align="end">
-        <button
-          mat-button
-          color="primary"
-          (click)="edit.emit(doc)"
-          matTooltip="Edit"
-        >
-          <mat-icon>edit</mat-icon> Edit
-        </button>
-        <button
-          mat-button
-          color="warn"
-          (click)="remove.emit(doc)"
-          matTooltip="Delete"
-        >
-          <mat-icon>delete</mat-icon> Delete
-        </button>
-      </mat-card-actions>
     </mat-card>
+
+    <mat-menu #menu="matMenu">
+      <button mat-menu-item (click)="edit.emit(doc)">
+        <mat-icon>edit</mat-icon>
+        <span>Edit</span>
+      </button>
+      <button mat-menu-item (click)="remove.emit(doc)">
+        <mat-icon>delete</mat-icon>
+        <span>Delete</span>
+      </button>
+    </mat-menu>
   `,
   styles: [
     `
