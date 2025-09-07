@@ -53,11 +53,7 @@ export type ExampleFormDialogData = {
       }}
       <header>
         <mat-dialog-content>
-          <form
-            class="form"
-            [formGroup]="form"
-            (ngSubmit)="onSubmit()"
-          >
+          <form class="form" [formGroup]="form">
             <mat-form-field appearance="outline" class="full">
               <mat-label>Name</mat-label>
               <input matInput formControlName="name" required />
@@ -134,6 +130,7 @@ export type ExampleFormDialogData = {
               color="primary"
               type="submit"
               [disabled]="form.invalid || submitting"
+              (click)="onSubmit()"
             >
               {{ data.mode === 'create' ? 'Create' : 'Save' }}
             </button>
@@ -200,6 +197,7 @@ export class ExampleMongodbDocCreateFormModalComponent {
     if (this.form.invalid) return;
     this.submitting = true;
 
+    console.log('Submitting', this.data.mode);
     if (this.data.mode === 'create') {
       const dto: CreateExampleMongodbDocDto =
         this.formSvc.toCreateDto(this.form);
