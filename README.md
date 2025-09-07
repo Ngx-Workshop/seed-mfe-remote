@@ -55,10 +55,10 @@ Running the entire platform (shell + all MFEs + backend) locally is unrealistic.
 - Open the **MFE Orchestrator** web UI at https://admin.ngx-workshop.io/list-mfe-remotes. You will see a list of all registered MFEs in the platform, including this seed MFE.
 
 - **Enable Dev Mode for the MFE:** click the Dev Mode toggle button next to your MFE’s entry (it looks like a code < > icon). This will open the Dev Mode Options panel for that MFE. (See screenshot below for reference.)
-  ![Enabling Dev Mode for an MFE in the Orchestrator UI][dev-mode-toggle]
+  ![Enabling Dev Mode for an MFE in the Orchestrator UI](https://github.com/Ngx-Workshop/.github/blob/main/readme-assets/enabling-dev-mode.png)
 
 - In the **Dev Mode Options** dialog, toggle the switch to **“Turn on Dev Mode.”** Then, in the Remote Entry Point field, enter the URL to your locally served remoteEntry.js. For example: http://localhost:4201/remoteEntry.js. (See second screenshot below.)
-  ![Dev Mode Options dialog with Remote Entry URL field][dev-mode-options]
+  ![Dev Mode Options dialog with Remote Entry URL field](https://github.com/Ngx-Workshop/.github/blob/main/readme-assets/dev-mode-options-dialog.png)
 
 - Save/apply the changes in the Orchestrator UI. Now your MFE is in Dev Mode, pointing to your localhost.
 
