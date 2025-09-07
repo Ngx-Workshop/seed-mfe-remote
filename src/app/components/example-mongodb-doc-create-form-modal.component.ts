@@ -7,8 +7,6 @@ import {
 import { ReactiveFormsModule } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCheckboxModule } from '@angular/material/checkbox';
-import { MatNativeDateModule } from '@angular/material/core';
-import { MatDatepickerModule } from '@angular/material/datepicker';
 import {
   MAT_DIALOG_DATA,
   MatDialogModule,
@@ -40,8 +38,6 @@ export type ExampleFormDialogData = {
     MatInputModule,
     MatSelectModule,
     MatCheckboxModule,
-    MatDatepickerModule,
-    MatNativeDateModule,
     MatButtonModule,
   ],
   template: `
@@ -93,31 +89,36 @@ export type ExampleFormDialogData = {
               >Archived</mat-checkbox
             >
 
-            <mat-form-field appearance="outline" class="full">
-              <mat-label>Last Updated</mat-label>
-              <input
-                matInput
-                [matDatepicker]="picker"
-                formControlName="lastUpdated"
-              />
-              <mat-datepicker #picker></mat-datepicker>
-              <mat-hint>Optional</mat-hint>
-            </mat-form-field>
+            <div class="address-section">
+              <h4>Address Information (Optional)</h4>
+              <div
+                formGroupName="exampleMongodbDocObject"
+                class="address-form"
+              >
+                <mat-form-field appearance="outline" class="full">
+                  <mat-label>Street</mat-label>
+                  <input matInput formControlName="street" />
+                  <mat-hint>Optional</mat-hint>
+                </mat-form-field>
 
-            <mat-form-field appearance="outline" class="full">
-              <mat-label>Object (JSON)</mat-label>
-              <textarea
-                matInput
-                formControlName="exampleMongodbDocObjectJson"
-                rows="6"
-                placeholder='{&#10;  "foo": "bar"&#10;}'
-              ></textarea>
-              @if(form.controls.exampleMongodbDocObjectJson.hasError('invalidJson'))
-              {
-              <mat-error>Invalid JSON</mat-error>
-              }
-              <mat-hint>Optional</mat-hint>
-            </mat-form-field>
+                <div class="row">
+                  <mat-form-field appearance="outline" class="city">
+                    <mat-label>City</mat-label>
+                    <input matInput formControlName="city" />
+                  </mat-form-field>
+
+                  <mat-form-field appearance="outline" class="state">
+                    <mat-label>State</mat-label>
+                    <input matInput formControlName="state" />
+                  </mat-form-field>
+
+                  <mat-form-field appearance="outline" class="zip">
+                    <mat-label>ZIP</mat-label>
+                    <input matInput formControlName="zip" />
+                  </mat-form-field>
+                </div>
+              </div>
+            </div>
           </form>
         </mat-dialog-content>
         <mat-dialog-actions align="end">
@@ -150,6 +151,36 @@ export type ExampleFormDialogData = {
         }
         .full {
           width: 100%;
+        }
+        .address-section {
+          border: 1px solid #e0e0e0;
+          border-radius: 4px;
+          padding: 16px;
+          background-color: #fafafa;
+        }
+        .address-section h4 {
+          margin: 0 0 16px 0;
+          color: #666;
+          font-size: 14px;
+          font-weight: 500;
+        }
+        .address-form {
+          display: grid;
+          gap: 12px;
+        }
+        .row {
+          display: grid;
+          grid-template-columns: 2fr 1fr 1fr;
+          gap: 12px;
+        }
+        .city {
+          grid-column: 1;
+        }
+        .state {
+          grid-column: 2;
+        }
+        .zip {
+          grid-column: 3;
         }
         .actions {
           display: flex;
@@ -184,7 +215,6 @@ export class ExampleMongodbDocCreateFormModalComponent {
             type: this.data.doc.type as any,
             description: (this.data.doc as any).description ?? '',
             archived: (this.data.doc as any).archived ?? false,
-            lastUpdated: (this.data.doc as any).lastUpdated,
             exampleMongodbDocObject: (this.data.doc as any)
               .exampleMongodbDocObject,
           }

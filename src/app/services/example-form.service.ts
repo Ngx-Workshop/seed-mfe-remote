@@ -1,37 +1,24 @@
 import { Injectable } from '@angular/core';
 import {
-  AbstractControl,
   FormBuilder,
   FormControl,
   FormGroup,
-  ValidationErrors,
   Validators,
 } from '@angular/forms';
 import { CreateExampleMongodbDocDto } from '@tmdjr/seed-service-nestjs-contracts';
-
-// Simple JSON validator: only validates when a value is present
-function jsonValidator(
-  ctrl: AbstractControl
-): ValidationErrors | null {
-  const v = ctrl.value as string;
-  if (!v || v.trim() === '') return null;
-  try {
-    JSON.parse(v);
-    return null;
-  } catch {
-    return { invalidJson: true };
-  }
-}
 
 export type CreateForm = FormGroup<{
   name: FormControl<string>;
   type: FormControl<'SOME_ENUM' | 'SOME_OTHER_ENUM'>;
   description: FormControl<string>;
   archived: FormControl<boolean>;
-  // Using Date | null in the form, serialize to string in DTO
-  lastUpdated: FormControl<Date | null>;
-  // Textarea-bound JSON string; parsed to ExampleMongodbDocObjectDto on submit
-  exampleMongodbDocObjectJson: FormControl<string>;
+  // Using nested FormGroup for ExampleMongodbDocObjectDto
+  exampleMongodbDocObject: FormGroup<{
+    street: FormControl<string>;
+    city: FormControl<string>;
+    state: FormControl<string>;
+    zip: FormControl<string>;
+  }>;
 }>;
 
 @Injectable({ providedIn: 'root' })
@@ -57,15 +44,32 @@ export class ExampleFormService {
       archived: this.fb.control(Boolean(initial?.archived ?? false), {
         nonNullable: true,
       }),
-      lastUpdated: this.fb.control(
-        initial?.lastUpdated ? new Date(initial.lastUpdated) : null
-      ),
-      exampleMongodbDocObjectJson: this.fb.control(
-        initial?.exampleMongodbDocObject
-          ? JSON.stringify(initial.exampleMongodbDocObject, null, 2)
-          : '',
-        { validators: [jsonValidator], nonNullable: true }
-      ),
+      exampleMongodbDocObject: this.fb.group({
+        street: this.fb.control(
+          initial?.exampleMongodbDocObject?.street ?? '',
+          {
+            nonNullable: true,
+          }
+        ),
+        city: this.fb.control(
+          initial?.exampleMongodbDocObject?.city ?? '',
+          {
+            nonNullable: true,
+          }
+        ),
+        state: this.fb.control(
+          initial?.exampleMongodbDocObject?.state ?? '',
+          {
+            nonNullable: true,
+          }
+        ),
+        zip: this.fb.control(
+          initial?.exampleMongodbDocObject?.zip ?? '',
+          {
+            nonNullable: true,
+          }
+        ),
+      }),
     });
   }
 
@@ -80,22 +84,20 @@ export class ExampleFormService {
     if (v.description?.trim()) dto.description = v.description.trim();
     if (v.archived === true) dto.archived = true; // omit when false
 
-    if (v.lastUpdated) {
-      // ISO string; adjust as needed for your API expectations
-      dto.lastUpdated = new Date(v.lastUpdated).toISOString();
-    }
-
+    // Only include the object if at least one field has a value
+    const objData = v.exampleMongodbDocObject;
     if (
-      v.exampleMongodbDocObjectJson &&
-      v.exampleMongodbDocObjectJson.trim()
+      objData.street.trim() ||
+      objData.city.trim() ||
+      objData.state.trim() ||
+      objData.zip.trim()
     ) {
-      try {
-        dto.exampleMongodbDocObject = JSON.parse(
-          v.exampleMongodbDocObjectJson
-        );
-      } catch {
-        // Leave it out if invalid; template should prevent submit via validator
-      }
+      dto.exampleMongodbDocObject = {
+        street: objData.street.trim(),
+        city: objData.city.trim(),
+        state: objData.state.trim(),
+        zip: objData.zip.trim(),
+      };
     }
 
     return dto;
