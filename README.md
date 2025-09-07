@@ -44,22 +44,7 @@ npm run dev:bundle
 
 This will build the MFE and serve the static bundle on port **4201**. The application’s files (including `remoteEntry.js`) will be available at `http://localhost:4201/`. You should see console output indicating the server is running. (This approach uses a static build to mimic how the MFE would be served in production.)
 
-> [!NOTE]
-> Useful information that users should know, even when skimming content.
-
-> [!TIP]
-> Helpful advice for doing things better or more easily.
-
-> [!IMPORTANT]
-> Key information users need to know to achieve their goal.
-
-> [!WARNING]
-> Urgent info that needs immediate user attention to avoid problems.
-
-> [!CAUTION]
-> Advises about risks or negative outcomes of certain actions.
-
-> [!TIP]
+> [!TIP] \
 > **Why not just ng serve?** <br> In this micro-frontend architecture, the shell application (container) normally runs on port 4200. We serve the remote on **4201** so it doesn’t conflict with the shell. The `dev:bundle` script builds a deployable bundle and serves it, which more closely resembles how the shell will consume the MFE. While you can use `ng serve` for quick development on the MFE alone, using the bundle server ensures the Module Federation remote entry is accessible as it would be in production.
 
 **3. Use the MFE Orchestrator to integrate with the shell.**
