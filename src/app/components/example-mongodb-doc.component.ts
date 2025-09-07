@@ -118,6 +118,9 @@ import { ExampleMongodbDocDto } from '@tmdjr/seed-service-nestjs-contracts';
         -webkit-box-orient: vertical;
         overflow: hidden;
       }
+      .mat-mdc-card-header {
+        display: block;
+      }
     `,
   ],
   changeDetection: ChangeDetectionStrategy.OnPush,

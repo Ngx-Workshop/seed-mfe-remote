@@ -156,6 +156,9 @@ export type ExampleFormDialogData = {
           justify-content: flex-end;
           gap: 8px;
         }
+        mat-dialog-content {
+          padding: 0px;
+        }
       }
     `,
   ],

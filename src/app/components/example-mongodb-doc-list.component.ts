@@ -57,20 +57,25 @@ import { ExampleMongodbDocComponent } from './example-mongodb-doc.component';
             [value]="query()"
             (input)="query.set($any($event.target).value)"
           />
+          @if(query()) {
           <button
             mat-icon-button
             matSuffix
-            *ngIf="query()"
             (click)="query.set('')"
             aria-label="Clear search"
           >
             <mat-icon>close</mat-icon>
           </button>
+          }
         </mat-form-field>
+        <button
+          mat-flat-button
+          color="primary"
+          (click)="openCreate()"
+        >
+          <mat-icon>add</mat-icon> New
+        </button>
       </div>
-      <button mat-flat-button color="primary" (click)="openCreate()">
-        <mat-icon>add</mat-icon> New
-      </button>
       <div class="grid">
         @for (d of filtered(); track d._id) {
         <ngx-example-mongodb-doc
@@ -148,7 +153,12 @@ import { ExampleMongodbDocComponent } from './example-mongodb-doc.component';
         width: 48px;
         height: 48px;
       }
-
+      .controls {
+        display: flex;
+        gap: 1.125rem;
+        justify-content: space-between;
+        align-items: baseline;
+      }
       button[matFab] {
         position: fixed;
         bottom: 48px;
