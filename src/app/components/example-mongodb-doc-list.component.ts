@@ -121,6 +121,7 @@ import { ExampleMongodbDocComponent } from './example-mongodb-doc.component';
         max-width: 1200px;
         margin: 0 auto;
         padding: 2rem;
+        margin-bottom: 6rem;
       }
       .grid {
         display: grid;
