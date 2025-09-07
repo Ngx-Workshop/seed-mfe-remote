@@ -59,7 +59,8 @@ This will build the MFE and serve the static bundle on port **4201**. The applic
 > [!CAUTION]
 > Advises about risks or negative outcomes of certain actions.
 
-> [!TIP] > **Why not just ng serve?** <br> In this micro-frontend architecture, the shell application (container) normally runs on port 4200. We serve the remote on **4201** so it doesn’t conflict with the shell. The `dev:bundle` script builds a deployable bundle and serves it, which more closely resembles how the shell will consume the MFE. While you can use `ng serve` for quick development on the MFE alone, using the bundle server ensures the Module Federation remote entry is accessible as it would be in production.
+> [!TIP]
+> **Why not just ng serve?** <br> In this micro-frontend architecture, the shell application (container) normally runs on port 4200. We serve the remote on **4201** so it doesn’t conflict with the shell. The `dev:bundle` script builds a deployable bundle and serves it, which more closely resembles how the shell will consume the MFE. While you can use `ng serve` for quick development on the MFE alone, using the bundle server ensures the Module Federation remote entry is accessible as it would be in production.
 
 **3. Use the MFE Orchestrator to integrate with the shell.**
 
