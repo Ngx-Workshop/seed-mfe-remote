@@ -1,4 +1,4 @@
-# seed-mfe-remote
+# 🌱 seed-mfe-remote
 
 ### Table of Contents
 
@@ -9,24 +9,17 @@
 
 ## Overview
 
-**seed-mfe-remote** is a starter repository for building a new **micro-frontend (MFE)** remote in the Ngx Workshop ecosystem. It provides a minimal Angular project (generated with Angular CLI) already configured for Webpack Module Federation, allowing it to plug into the Ngx-Workshop **shell** application. The purpose of this seed is to give developers a quick starting point to create a focused MFE, with examples of configuration, deployment, and integration into the platform.
-
-This seed repo comes with a basic module setup, some demo components/services, and a CI/CD workflow. You can clone it and customize it to create your own MFE. By using this seed, you get:
-
-- **Pre-configured Module Federation:** The project is set up to build a `remoteEntry.js` bundle for integration with the shell.
-
-- **Local Development Tools:** Scripts to run and serve the MFE locally for development.
-
-- **Deployment Pipeline:** A GitHub Actions workflow is included for building and deploying the MFE to the Ngx Workshop infrastructure.
-
-- **Example Code Patterns:** Some sample components and a service (including a reference to a NestJS contracts package) to illustrate how an MFE might interact with back-end services (these can be removed or adapted for your actual feature).
-
 In summary, **seed-mfe-remote** is the “hello world” of Ngx-Workshop micro-frontends – start here to build your own feature module in a modular, scalable way.
+
+**seed-mfe-remote** is a starter repository for building a new **micro-frontend (MFE)** remote in the Ngx Workshop ecosystem. It provides a minimal Angular project (generated with Angular CLI) already configured for Webpack Module Federation, allowing it to plug into the Ngx-Workshop **shell** application.
+
+The purpose of this seed is to give developers a quick starting point to create a focused MFE, with examples of configuration, deployment, and integration into the platform.
 
 # Getting Started (Local Development)
 
 To get the MFE running locally on your machine for development:
 
+\
 **1. Clone the repository and install dependencies.**
 
 ```bash
@@ -35,6 +28,7 @@ cd seed-mfe-remote
 npm install
 ```
 
+\
 **2. Start the local dev server for the MFE.** \
 Run the seed’s special development script:
 
@@ -42,12 +36,13 @@ Run the seed’s special development script:
 npm run dev:bundle
 ```
 
-This will build the MFE and serve the static bundle on port **4201**. The application’s files (including `remoteEntry.js`) will be available at `http://localhost:4201/`. You should see console output indicating the server is running. (This approach uses a static build to mimic how the MFE would be served in production.)
+This will build the MFE and serve the static bundle on port **4201**. The application’s files (including `remoteEntry.js`) will be available at `http://localhost:4201/`.
 
 > [!TIP]
 >
-> **Why not just ng serve?** <br> <sub>In this micro-frontend architecture, we need to serve the static bundle (transcompiled files) because the shell application dynamically loads the MFE’s `remoteEntry.js` at runtime. So, when we save the MFE code, we need to rebuild the bundle for the shell to pick up changes. Using the `http-server` package to serve the built files simulates how the MFE would be hosted in a real deployment.</sub>
+> **_Why not just ng serve?_** <br>In this micro-frontend architecture, we need to serve the static bundle (transcompiled files) because the shell application dynamically loads the MFE’s `remoteEntry.js` at runtime. <br> <br> So, when we save the MFE code, we need to rebuild the bundle for the shell to pick up changes. Using the `http-server` package to serve the built files simulates how the MFE would be hosted in a real deployment.
 
+\
 **3. Use the MFE Orchestrator to integrate with the shell.**
 
 Running the entire platform (shell + all MFEs + backend) locally is unrealistic. Instead, you can run this one MFE locally and connect it to the live shell running in the cloud using the Ngx-Workshop **MFE Orchestrator** admin UI. The Orchestrator allows you to override the remote’s URL so that _your_ shell session loads the local code.
