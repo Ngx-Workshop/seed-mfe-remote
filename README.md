@@ -23,9 +23,13 @@ To get the MFE running locally on your machine for development:
 **1. Clone the repository and install dependencies.**
 
 ```bash
+# If you didn't run the quickstart script, clone the repo manually:
 git clone https://github.com/Ngx-Workshop/seed-mfe-remote.git
 cd seed-mfe-remote
 npm install
+
+#else
+cd ~/NGX-WORKSHOP-ORG/seed-mfe-remote
 ```
 
 \
@@ -70,63 +74,85 @@ The shell should now fetch your local MFE’s code instead of the deployed versi
 >
 > https://github.com/Ngx-Workshop/mfe-shell-workshop/blob/main/src/app/services/mfe-registry.service.ts#L61
 
-## Creating a New MFE from This Seed
+# Creating a New MFE from This Seed
 
 Once you’ve explored the seed project, you can use it to scaffold a brand new micro-frontend. Follow these steps to create your own MFE based on seed-mfe-remote:
 
+\
 **1. Clone the seed repository and rename it.**
-Decide on a name for your new MFE (for example, `seed-mfe-example`). Then clone this repo to a new folder with that name:
+Decide on a name for your new MFE (for example, `mfe-user-journey-example`). Then clone this repo to a new folder with that name:
+
+Prerequisites:\
+<sub>The script requires GitHub CLI to be installed and authenticated:</sub>
 
 ```bash
-git clone https://github.com/Ngx-Workshop/seed-mfe-remote.git seed-mfe-example
+brew install gh
+gh auth login
 ```
 
-> This copies all the seed files into a new project directory called **seed-mfe-example**. Initialize a new git repository there (or update the remote origin to a new GitHub repo if you prefer to preserve commit history).
+```bash
+# 1) Create and enter your workspace folder
+mkdir -p ~/NGX-WORKSHOP-ORG && cd ~/NGX-WORKSHOP-ORG
 
-**2. Find & replace the seed name in code.**
+# 2) Download the installer script from the org profile
+curl -fsSL \
+  https://raw.githubusercontent.com/Ngx-Workshop/.github/main/profile/create-mfe-remote.sh \
+  -o create-mfe-remote.sh
 
-Open the project in your editor and do a global search for `seed-mfe-remote`. Replace all occurrences with your new chosen name (e.g. **seed-mfe-example**). This will update the package names, module federation config, Angular project name, `deploy.yml` etc., to use your MFE’s identity.
+# (Alternatively)
+# wget -qO create-mfe-remote.sh \
+#   https://raw.githubusercontent.com/Ngx-Workshop/.github/main/profile/create-mfe-remote.sh
 
-**3. Remove the demo content.**
+# 3) Make it executable and run it
+chmod +x ./create-mfe-remote.sh
+./create-mfe-remote.sh
+```
+
+\
+**2. Remove the demo content.**
+
 The seed comes with some example components and services (for demonstration purposes). You should delete or replace these with your own functionality:
 
 - Remove any demo components and their references (for example, a placeholder component or test page included in the seed).
 
 - Remove or adapt the example service that comes with the seed. The seed might include a service that calls a sample API or uses a placeholder contract.
 
-  > **Important:** If the seed’s package.json includes a dependency on `@tmdjr/seed-service-nestjs-contracts`, you should remove this package (_and any import of it in the code_) unless you plan to use that demo backend contract. <br> This package was included as an example to show how a frontend could use shared TypeScript interfaces from a NestJS service – it’s not needed for your new MFE.
+  > [!IMPORTANT]
+  >
+  > <sub>If the seed’s package.json includes a dependency on `@tmdjr/seed-service-nestjs-contracts`, you should remove this package (_and any import of it in the code_) unless you plan to use that demo backend contract. <br> This package was included as an example to show how a frontend could use shared TypeScript interfaces from a NestJS service – it’s not needed for your new MFE</sub>.
 
-**5. Push to main and deploy.**
-
-The seed project includes a GitHub Actions workflow that will automatically build and deploy the MFE whenever changes are pushed to the main branch. Once your code is in main (and the secrets above are set), the CI/CD pipeline will run. It will compile your Angular app and then upload the build artifacts to the server (via SSH). After a successful deployment, your MFE’s static files (including remoteEntry.js and other bundle files) will be hosted at the configured location on the ngx-workshop.io server.
-
-**6. Register the new MFE in the Orchestrator.**
+\
+**3. Register the new MFE in the Orchestrator.**
 
 Now that your MFE is deployed, inform the shell about it by registering it through the MFE Orchestrator Admin UI. In the admin interface, add a new MFE entry (or update an existing one if you repurposed the seed entry) with:
 
-- Name: the name of your MFE (e.g. seed-mfe-example). This should match the name you used in the code and deployment.
+- Name: the name of your MFE (e.g. mfe-user-journey-example). This should match the name you used in the code and deployment.
+
 - Remote Entry URL: the URL where the shell can load the remote’s bundle. By convention, remote bundles are hosted under the /remotes/<name>/remoteEntry.js path. For the beta environment, the URL would be:
 
-https://beta.ngx-workshop.io/remotes/seed-mfe-example/remoteEntry.js
+https://beta.ngx-workshop.io/remotes/mfe-user-journey-example/remoteEntry.js
 
-(Replace seed-mfe-example with your actual MFE name. Ensure this matches the folder/name configured on the server.)
+(Replace mfe-user-journey-example with your actual MFE name. Ensure this matches the folder/name configured on the server.)
 Save the new MFE entry. The shell application will now be aware of your micro-frontend.
 
-**7. Access your MFE via its route.**
+**4. Access your MFE via its route.**
 
-Each user-journey MFE in Ngx-Workshop is mounted under a route derived from its name (which is typically in snake-case format). The shell auto-generates the route based on the MFE name you registered. For example, if your MFE is named seed-mfe-example, you can navigate to /app/seed-mfe-example on the main site, and the shell will load your MFE’s remote module. (The mfe-shell container automatically maps this route even if no navigation link is yet present in the UI.) This means you can directly visit the URL to see your MFE in action as soon as it’s registered and deployed.
-Note: The route is usually the MFE name in lowercase hyphenated form (the same as the repository name or the “short name” you chose). If your MFE name has a prefix like mfe-user-journey-, the shell may drop that prefix for the route. For instance, an MFE named mfe-user-journey-profile-page would likely be accessible at /app/profile-page. In any case, using the full name as shown above will work as a starting point.
+Each user-journey MFE in Ngx-Workshop is mounted under a route derived from its name (which is typically in snake-case format). The shell auto-generates the route based on the MFE name you registered. For example, if your MFE is named mfe-user-journey-example, you can navigate to /app/mfe-user-journey-example on the main site, and the shell will load your MFE’s remote module. (The mfe-shell container automatically maps this route even if no navigation link is yet present in the UI.) This means you can directly visit the URL to see your MFE in action as soon as it’s registered and deployed.
 
-Best Practices
+> ![NOTE]
+>
+> The route is usually the MFE name in lowercase hyphenated form (the same as the repository name or the “short name” you chose). If your MFE name has a prefix like mfe-user-journey-, the shell may drop that prefix for the route. For instance, an MFE named mfe-user-journey-profile-page would likely be accessible at /app/profile-page. In any case, using the full name as shown above will work as a starting point.
+
+# Best Practices
 
 When developing your micro-frontend, keep these best practices in mind to ensure consistency and maintainability within the Ngx Workshop ecosystem:
 
-- Focus Each MFE on a Single Feature: MFEs (especially user-journey MFEs) should remain small and modular, encapsulating one feature or user flow. Avoid creating “monolithic” remotes that try to do too much. Smaller MFEs load faster and can be developed and deployed independently by different teams.
-- Avoid Nested Micro-Frontends: Do not have one remote MFE attempt to directly load another remote. The shell container is responsible for orchestrating which MFEs are loaded on a page. Each MFE should be independent; nested MFEs (one remote importing another remote) can lead to complexity and are not supported in this architecture. If you find yourself needing this, consider if those parts should actually be in the same MFE or exposed via a shared library.
-- Embrace Reactive Programming: Use idiomatic Angular patterns with RxJS for state management and UI composition within your MFE. For example, use services with Observable streams to handle data flow, and use the async pipe in templates for automatically updating UI on data changes. Embracing a reactive approach makes it easier to integrate with the shell and other MFEs, since data can flow in a stream-like manner and side effects are minimized. It also keeps your MFE’s internal logic decoupled, which is ideal in a micro-frontend environment.
-- Keep Shared Dependencies in Sync: Because MFEs in Ngx-Workshop might share libraries (via Module Federation’s shared modules), try to use the same version of common packages (Angular itself, RxJS, etc.) as the shell and other MFEs to avoid version conflicts. The seed is configured with peer dependencies that match the shell – it’s best to update in tandem with the platform when those dependencies change.
+- **Focus Each MFE on a Single Feature:** MFEs (especially user-journey MFEs) should remain small and modular, encapsulating one feature or user flow. Avoid creating “monolithic” remotes that try to do too much. Smaller MFEs load faster and can be developed and deployed independently by different teams.
+
+- **Avoid Nested Micro-Frontends:** Do not have one remote MFE attempt to directly load another remote. The shell container is responsible for orchestrating which MFEs are loaded on a page. Each MFE should be independent; nested MFEs (one remote importing another remote) can lead to complexity and are not supported in this architecture. If you find yourself needing this, consider if those parts should actually be in the same MFE or exposed via a shared library.
+
+- **Embrace Reactive Programming:** Use idiomatic Angular patterns with RxJS for state management and UI composition within your MFE. For example, use services with Observable streams to handle data flow, and use the async pipe in templates for automatically updating UI on data changes. Embracing a reactive approach makes it easier to integrate with the shell and other MFEs, since data can flow in a stream-like manner and side effects are minimized. It also keeps your MFE’s internal logic decoupled, which is ideal in a micro-frontend environment.
+
+- **Keep Shared Dependencies in Sync:** Because MFEs in Ngx-Workshop might share libraries (via Module Federation’s shared modules), try to use the same version of common packages (Angular itself, RxJS, etc.) as the shell and other MFEs to avoid version conflicts. The seed is configured with peer dependencies that match the shell – it’s best to update in tandem with the platform when those dependencies change.
 
 By following these guidelines, your new micro-frontend will remain efficient, maintainable, and compatible with the rest of the Ngx-Workshop platform. Happy coding, and welcome to the Ngx-Workshop micro-frontend journey!
-
-[dev-mode-toggle]: (TODO: add screenshot URL) “Screenshot of enabling Dev Mode for an MFE in the Orchestrator UI”
-[dev-mode-options]: (TODO: add screenshot URL) “Screenshot of the Dev Mode Options dialog where you set the remoteEntry URL”
