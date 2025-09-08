@@ -55,14 +55,17 @@ Instead, you can run this one MFE locally and connect it to the live shell runni
 | **Enable Dev Mode for the MFE:** click the Dev Mode toggle button next to your MFE’s entry (it looks like a code < > icon). This will open the Dev Mode Options panel for that MFE.                                             | ![Enabling Dev Mode for an MFE in the Orchestrator UI](https://github.com/Ngx-Workshop/.github/blob/main/readme-assets/enabling-dev-mode.png?raw=true)       |
 | In the **Dev Mode Options** dialog, toggle the switch to **“Turn on Dev Mode.”** Then, in the Remote Entry Point field, enter the URL to your locally served remoteEntry.js. For example: http://localhost:4201/remoteEntry.js. | ![Dev Mode Options dialog with Remote Entry URL field](https://github.com/Ngx-Workshop/.github/blob/main/readme-assets/dev-mode-options-dialog.png?raw=true) |
 
+\
 **4. Verify the local override is working.**
 
 Open the main application; https://beta.ngx-workshop.io/seed-mfe
 
 The shell should now fetch your local MFE’s code instead of the deployed version. You can develop your MFE in real time(you have to manually reload), while the rest of the app (other MFEs and services) comes from the cloud.
 
-> **How does the Dev Mode override work?** <br> Under the hood, the shell application checks the browser’s `localStorage` for any dev-mode flags when it loads. Enabling Dev Mode in the Orchestrator writes a special key (mapping your MFE name to the localhost URL) into localStorage on your browser. The shell reads this and substitutes the remote’s URL accordingly. This means only your browser session uses the local build; all other users continue to use the normal remote URL. It’s a handy way to develop against the live system without affecting others.
-
+> ![NOTE]
+>
+> **How does the Dev Mode override work?** <br> <sub>Under the hood, the shell application checks the browser’s `localStorage` for any dev-mode flags when it loads. Enabling Dev Mode in the Orchestrator writes a special key (mapping your MFE name to the localhost URL) into localStorage on your browser. The shell reads this and substitutes the remote’s URL accordingly. This means only your browser session uses the local build; all other users continue to use the normal remote URL. It’s a handy way to develop against the live system without affecting others.</sub>
+>
 > https://github.com/Ngx-Workshop/mfe-shell-workshop/blob/main/src/app/services/mfe-registry.service.ts#L61
 
 ## Creating a New MFE from This Seed
