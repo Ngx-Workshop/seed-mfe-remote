@@ -90,6 +90,9 @@ brew install gh
 gh auth login
 ```
 
+\
+Bash Script: https://github.com/Ngx-Workshop/.github/blob/main/profile/create-mfe-remote.sh
+
 ```bash
 # 1) Create and enter your workspace folder
 mkdir -p ~/NGX-WORKSHOP-ORG && cd ~/NGX-WORKSHOP-ORG
@@ -109,20 +112,8 @@ chmod +x ./create-mfe-remote.sh
 ```
 
 \
-**2. Remove the demo content.**
 
-The seed comes with some example components and services (for demonstration purposes). You should delete or replace these with your own functionality:
-
-- Remove any demo components and their references (for example, a placeholder component or test page included in the seed).
-
-- Remove or adapt the example service that comes with the seed. The seed might include a service that calls a sample API or uses a placeholder contract.
-
-  > [!IMPORTANT]
-  >
-  > <sub>If the seed’s package.json includes a dependency on `@tmdjr/seed-service-nestjs-contracts`, you should remove this package (_and any import of it in the code_) unless you plan to use that demo backend contract. <br> This package was included as an example to show how a frontend could use shared TypeScript interfaces from a NestJS service – it’s not needed for your new MFE</sub>.
-
-\
-**3. Register the new MFE in the Orchestrator.**
+**2. Register the new MFE in the Orchestrator.**
 
 Now that your MFE is deployed, inform the shell about it by registering it through the MFE Orchestrator Admin UI. In the admin interface, add a new MFE entry (or update an existing one if you repurposed the seed entry) with:
 
@@ -135,7 +126,7 @@ https://beta.ngx-workshop.io/remotes/mfe-user-journey-example/remoteEntry.js
 (Replace mfe-user-journey-example with your actual MFE name. Ensure this matches the folder/name configured on the server.)
 Save the new MFE entry. The shell application will now be aware of your micro-frontend.
 
-**4. Access your MFE via its route.**
+**3. Access your MFE via its route.**
 
 Each user-journey MFE in Ngx-Workshop is mounted under a route derived from its name (which is typically in snake-case format). The shell auto-generates the route based on the MFE name you registered. For example, if your MFE is named mfe-user-journey-example, you can navigate to /app/mfe-user-journey-example on the main site, and the shell will load your MFE’s remote module. (The mfe-shell container automatically maps this route even if no navigation link is yet present in the UI.) This means you can directly visit the URL to see your MFE in action as soon as it’s registered and deployed.
 
