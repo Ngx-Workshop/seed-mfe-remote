@@ -35,7 +35,7 @@ cd seed-mfe-remote
 npm install
 ```
 
-**2. Start the local dev server for the MFE.**
+**2. Start the local dev server for the MFE.** \
 Run the seed’s special development script:
 
 ```bash
@@ -46,7 +46,7 @@ This will build the MFE and serve the static bundle on port **4201**. The applic
 
 > [!TIP]
 >
-> **Why not just ng serve?** <br> In this micro-frontend architecture, the shell application (container) normally runs on port 4200. We serve the remote on **4201** so it doesn’t conflict with the shell. The `dev:bundle` script builds a deployable bundle and serves it, which more closely resembles how the shell will consume the MFE. While you can use `ng serve` for quick development on the MFE alone, using the bundle server ensures the Module Federation remote entry is accessible as it would be in production.
+> **Why not just ng serve?** <br> In this micro-frontend architecture, we need to serve the static bundle (transcompiled files) because the shell application dynamically loads the MFE’s `remoteEntry.js` at runtime. So, when we save the MFE code, we need to rebuild the bundle for the shell to pick up changes. Using the `http-server` package to serve the built files simulates how the MFE would be hosted in a real deployment.
 
 **3. Use the MFE Orchestrator to integrate with the shell.**
 
