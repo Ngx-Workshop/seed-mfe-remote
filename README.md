@@ -40,7 +40,7 @@ This will build the MFE and serve the static bundle on port **4201**. The applic
 
 > [!TIP]
 >
-> **_Why not just ng serve?_** <br>In this micro-frontend architecture, we need to serve the static bundle (transcompiled files) because the shell application dynamically loads the MFE’s `remoteEntry.js` at runtime. <br> <br> So, when we save the MFE code, we need to rebuild the bundle for the shell to pick up changes. Using the `http-server` package to serve the built files simulates how the MFE would be hosted in a real deployment.
+> Why not just ng serve? <br><sub>In this micro-frontend architecture, we need to serve the static bundle (transcompiled files) because the shell application dynamically loads the MFE’s `remoteEntry.js` at runtime. <br> <br> So, when we save the MFE code, we need to rebuild the bundle for the shell to pick up changes. Using the `http-server` package to serve the built files simulates how the MFE would be hosted in a real deployment.</sub>
 
 \
 **3. Use the MFE Orchestrator to integrate with the shell.**
