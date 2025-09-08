@@ -62,7 +62,7 @@ Open the main application; https://beta.ngx-workshop.io/seed-mfe
 
 The shell should now fetch your local MFE’s code instead of the deployed version. You can develop your MFE in real time(you have to manually reload), while the rest of the app (other MFEs and services) comes from the cloud.
 
-> ![NOTE]
+> [!NOTE]
 >
 > **How does the Dev Mode override work?** <br> <sub>Under the hood, the shell application checks the browser’s `localStorage` for any dev-mode flags when it loads. Enabling Dev Mode in the Orchestrator writes a special key (mapping your MFE name to the localhost URL) into localStorage on your browser. The shell reads this and substitutes the remote’s URL accordingly. This means only your browser session uses the local build; all other users continue to use the normal remote URL. It’s a handy way to develop against the live system without affecting others.</sub>
 >
