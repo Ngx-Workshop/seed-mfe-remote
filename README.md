@@ -58,7 +58,9 @@ Instead, you can run this one MFE locally and connect it to the live shell runni
 \
 **4. Verify the local override is working.**
 
-Open the main application; https://beta.ngx-workshop.io/seed-mfe
+| Step                                                                                                                                                                                                                                                                     | Column 2 Header                                                                                                    |
+| ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------ |
+| Add `<h1>Hello World</h1>` text to the MFE’s [list component template](https://github.com/Ngx-Workshop/seed-mfe-remote/blob/main/src/app/components/example-mongodb-doc-list.component.ts#L43) <br><br> Open the main application; https://beta.ngx-workshop.io/seed-mfe | ![Dummy Text 2](https://github.com/Ngx-Workshop/.github/blob/main/readme-assets/seed-mfe-hello-world.png?raw=true) |
 
 The shell should now fetch your local MFE’s code instead of the deployed version. You can develop your MFE in real time(you have to manually reload), while the rest of the app (other MFEs and services) comes from the cloud.
 
