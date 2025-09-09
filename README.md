@@ -122,7 +122,7 @@ Now that your MFE is deployed, inform the shell about it by registering it throu
 
 Save the new MFE entry. The shell application will now be aware of your micro-frontend.
 
-> ![NOTE]
+> [!NOTE]
 >
 > Each user-journey MFE in Ngx-Workshop is mounted under a route derived from its name (which is typically in snake-case format). The shell auto-generates the route based on the MFE name you registered. For example, if your MFE is named `mfe-user-journey-example`, you can navigate to `/mfe-user-journey-example` on the main site, and the shell will load your MFE’s remote module. (The mfe-shell container automatically maps this route even if no navigation link is yet present in the UI.) This means you can directly visit the URL to see your MFE in action as soon as it’s registered and deployed.
 
