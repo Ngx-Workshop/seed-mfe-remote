@@ -62,9 +62,9 @@ Instead, you can run this one MFE locally and connect it to the live shell runni
 \
 **4. Verify the local override is working.**
 
-| Steps                                                                                                                                                                                                                                                                    | Images                                                                                                             |
-| ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------ |
-| Add `<h1>Hello World</h1>` text to the MFE’s [list component template](https://github.com/Ngx-Workshop/seed-mfe-remote/blob/main/src/app/components/example-mongodb-doc-list.component.ts#L43) <br><br> Open the main application; https://beta.ngx-workshop.io/seed-mfe | ![Dummy Text 2](https://github.com/Ngx-Workshop/.github/blob/main/readme-assets/seed-mfe-hello-world.png?raw=true) |
+| Steps                                                                                                                                                                                                                                                                    | Images                                                                                                                          |
+| ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------- |
+| Add `<h1>Hello World</h1>` text to the MFE’s [list component template](https://github.com/Ngx-Workshop/seed-mfe-remote/blob/main/src/app/components/example-mongodb-doc-list.component.ts#L43) <br><br> Open the main application; https://beta.ngx-workshop.io/seed-mfe | ![MFE seed live in the shel](https://github.com/Ngx-Workshop/.github/blob/main/readme-assets/seed-mfe-hello-world.png?raw=true) |
 
 The shell should now fetch your local MFE’s code instead of the deployed version. You can develop your MFE in real time(you have to manually reload), while the rest of the app (other MFEs and services) comes from the cloud.
 
@@ -112,27 +112,19 @@ chmod +x ./create-mfe-remote.sh
 ```
 
 \
-
 **2. Register the new MFE in the Orchestrator.**
 
-Now that your MFE is deployed, inform the shell about it by registering it through the MFE Orchestrator Admin UI. In the admin interface, add a new MFE entry (or update an existing one if you repurposed the seed entry) with:
+Now that your MFE is deployed, inform the shell about it by registering it through the [MFE Orchestrator Admin UI](https://admin.ngx-workshop.io/list-mfe-remotes). In the admin interface, add a new MFE entry (or update an existing one if you repurposed the seed entry) with:
 
-- Name: the name of your MFE (e.g. mfe-user-journey-example). This should match the name you used in the code and deployment.
+| Steps                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                 | Image                                                                                                                       |
+| --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------- |
+| **Name:** the name of your MFE (e.g. mfe-user-journey-example). This name will be used as route within the shell. Shell app will proform slugification (lowercase, hyphenated) automatically. <br><br> **Remote Entry URL:** the URL where the shell can load the remote’s bundle. By convention, remote bundles are hosted under the `/remotes/<repo-name>/remoteEntry.js` path. For the beta environment, the URL would be: <br><br> `https://beta.ngx-workshop.io/remotes/mfe-user-journey-example/remoteEntry.js` <br><br> <sub>(Replace mfe-user-journey-example with your actual MFE name. Ensure this matches the folder/name configured on the server.)</sub> | ![MFE seed live in the shel](https://github.com/Ngx-Workshop/.github/blob/main/readme-assets/admin-mfe-create.png?raw=true) |
 
-- Remote Entry URL: the URL where the shell can load the remote’s bundle. By convention, remote bundles are hosted under the /remotes/<name>/remoteEntry.js path. For the beta environment, the URL would be:
-
-https://beta.ngx-workshop.io/remotes/mfe-user-journey-example/remoteEntry.js
-
-(Replace mfe-user-journey-example with your actual MFE name. Ensure this matches the folder/name configured on the server.)
 Save the new MFE entry. The shell application will now be aware of your micro-frontend.
-
-**3. Access your MFE via its route.**
-
-Each user-journey MFE in Ngx-Workshop is mounted under a route derived from its name (which is typically in snake-case format). The shell auto-generates the route based on the MFE name you registered. For example, if your MFE is named mfe-user-journey-example, you can navigate to /app/mfe-user-journey-example on the main site, and the shell will load your MFE’s remote module. (The mfe-shell container automatically maps this route even if no navigation link is yet present in the UI.) This means you can directly visit the URL to see your MFE in action as soon as it’s registered and deployed.
 
 > ![NOTE]
 >
-> The route is usually the MFE name in lowercase hyphenated form (the same as the repository name or the “short name” you chose). If your MFE name has a prefix like mfe-user-journey-, the shell may drop that prefix for the route. For instance, an MFE named mfe-user-journey-profile-page would likely be accessible at /app/profile-page. In any case, using the full name as shown above will work as a starting point.
+> Each user-journey MFE in Ngx-Workshop is mounted under a route derived from its name (which is typically in snake-case format). The shell auto-generates the route based on the MFE name you registered. For example, if your MFE is named `mfe-user-journey-example`, you can navigate to `/mfe-user-journey-example` on the main site, and the shell will load your MFE’s remote module. (The mfe-shell container automatically maps this route even if no navigation link is yet present in the UI.) This means you can directly visit the URL to see your MFE in action as soon as it’s registered and deployed.
 
 # Best Practices
 
