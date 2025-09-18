@@ -88,6 +88,7 @@ Prerequisites:\
 ```bash
 brew install gh
 gh auth login
+npm i -g http-server
 ```
 
 \
