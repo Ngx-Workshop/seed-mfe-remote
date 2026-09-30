@@ -1,5 +1,18 @@
 # 🌱 MFE Remote Seed
 
+## Implementation context for AI agents
+
+Start with [AGENTS.md](AGENTS.md). This repository contains a self-contained,
+Spec Kit-inspired Markdown workflow: [project principles](.specify/memory/constitution.md),
+[architecture and external contracts](docs/architecture.md),
+[development and verification](docs/development.md), and
+[specification/plan/task/handoff templates](.specify/README.md).
+Track feature work in [specs](specs/README.md). When cloning the seed into a new
+repository, follow the [seed adoption checklist](docs/seed-adoption.md).
+
+The development guide records source-checked commands and inherited limitations;
+the onboarding walkthrough below provides the broader platform workflow.
+
 <img src="https://github.com/Ngx-Workshop/.github/blob/main/readme-assets/angular-gradient-wordmark.gif?raw=true" height="132" alt="Angular Logo" /> <img src="https://github.com/Ngx-Workshop/.github/blob/main/readme-assets/module-federation-logo.svg?raw=true" height="132" style="max-width: 100%;height: 132px;" alt="Module Federation" />
 
 ### Table of Contents
