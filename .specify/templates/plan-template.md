@@ -48,3 +48,12 @@ or N/A with explanation. Avoid unrelated deployment work.>
 ## Decisions and open questions
 
 <Resolved choices with evidence; unresolved decisions and which tasks they block.>
+
+## Frontend architecture review
+
+Describe the feature tree under src/app/features/<feature> and mirrored testing/app
+paths. Map stateless HTTP, singleton state orchestration, scoped view models,
+orchestration components, presentation components and typed forms. Record stream
+operators/lifetimes, loading/empty/error/retry behavior, inline HTML/SCSS/BEM and
+component size exceptions. Verify npm run check:architecture, appropriate behavior
+tests and build; record any rule exceptions with rationale and impact.

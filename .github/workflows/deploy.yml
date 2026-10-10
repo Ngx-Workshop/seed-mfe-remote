@@ -47,6 +47,7 @@ jobs:
       - name: Install dependencies and build
         run: |
           npm ci
+          npm run check:architecture
           npm run build -- --configuration production
           test -f dist/seed-mfe-remote/index.html
 

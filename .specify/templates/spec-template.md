@@ -59,3 +59,9 @@ gateway, or other service integration is within the acceptance scope.>
 | ID | Assumption or question | Impact | Resolution/evidence |
 | --- | --- | --- | --- |
 | Q-001 | <Question or assumption; NEEDS CLARIFICATION if consequential> | <Affected scope> | <Answer, accepted assumption, or pending> |
+
+## Frontend quality requirements
+
+Use the seed constitution's MVVM boundaries, feature/mirrored test folders,
+standalone OnPush components, inline HTML/SCSS and BEM classes. Specify observable
+loading/empty/error/retry states and user-input preservation for mutations.

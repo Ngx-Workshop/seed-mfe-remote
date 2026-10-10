@@ -33,3 +33,10 @@ that do not apply. Unchecked external tasks remain visible in the handoff.
 | Task | Result or blocker | Evidence |
 | --- | --- | --- |
 | T001 | <Not started/in progress/complete/blocked> | <Command result, file, or check> |
+
+## Frontend architecture verification
+
+Include applicable tasks for feature/test folder placement, API/store/VM boundaries,
+inline BEM components and reactive teardown. Add npm run check:architecture and
+appropriate test/build commands to the verification tasks. Document cohesive
+component-size exceptions rather than treating the approximate target as a cap.

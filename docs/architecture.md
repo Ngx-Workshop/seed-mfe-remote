@@ -1,76 +1,89 @@
 # Architecture and external context
 
-Source baseline: 2026-09-29, commit `b5238b2`. Recheck source when changing behavior.
+Updated 2026-10-09 for [001 MVVM starter](../specs/001-mvvm-starter/spec.md).
+The executable seed demonstrates example-document list/search/create/edit/delete.
+It owns this journey; shell, gateway, auth and backend data are external owners.
 
-## Role in Ngx-Workshop
+## Source map
 
-Ngx-Workshop combines Angular micro-frontends, NestJS services, MongoDB, and an
-Nginx/gateway layer. Host shells compose structural remotes (header, navigation,
-footer) and user journeys. Services own their data; shared npm packages carry
-contracts and reusable frontend behavior between independently deployed repos.
+```text
+src/app/
+  app.ts / app.config.ts / app.routes.ts
+  features/example-documents/
+    api/                  # stateless ExampleCrudApiService
+    models/               # generated DTO exports, dialog/form types
+    state/                # singleton ExampleDocumentsStore
+    forms/                # stateless typed ExampleFormService
+    utils/                # user-facing API error mapping
+    pages/catalog/        # catalog orchestration + scoped CatalogViewModel
+    components/
+      document-card/      # typed card presentation
+      document-form/      # document/address form presentations
+      editor/             # dialog orchestration + scoped EditorViewModel
+testing/
+  app/                    # mirrors source app/features folders
+  fixtures/               # synthetic test-only DTOs
+scripts/check-architecture.mjs
+```
 
-This seed demonstrates a list, search, create/edit dialog, and delete flow for
-example documents. It owns that UI and its HTTP client. It does not own the shell,
-remote registry, gateway routing, authentication service, or MongoDB persistence.
+The data flow is API → singleton store → scoped VM → component template.
+User intents flow from presentation outputs → orchestration/VM → store → API.
+App is a thin public composition entry point. Catalog/dialog components inject
+scoped VMs and UI integration such as MatDialog. Cards/forms inject no server state.
+Forms accept a typed FormGroup from the owning scoped VM; this demonstrates nested
+presentation without putting forms in singleton state.
 
-## Local source map
+The store exposes readonly shared signals and owns loading/error/mutation state.
+Its root refresh stream uses switchMap to cancel stale reads and retains successful
+records on read failure. Mutation observables trigger refresh on success; finalize
+releases pending state on completion/error/cancellation. A refresh error after a
+successful write stays a read error, not a failed write that encourages duplicates.
+Scoped command streams use exhaustMap; takeUntilDestroyed ends their requests.
+Editor errors keep the form open and preserve input for retry. Form mapping sends
+false archived and blank description explicitly and validates optional addresses.
 
-| Concern | Source | Current behavior |
+## Federation and providers
+
+Keep named/default App, named Routes, ngx-seed-mfe, ./Component, ./Routes and
+remoteEntry.js. The route export retains empty-path redirect to hello-world.
+The host supplies HttpClient/session interceptors and Router when it consumes
+Routes. Remote loading does not install standalone appConfig. Standalone bootstrap
+uses App directly and needs no Router because the example has no route navigation.
+It provides zoneless change detection, HTTP and animations. src/styles.scss supplies
+the standalone Material theme; federation does not install this theme in the host.
+
+Angular/Material/CDK 21.1.0, RxJS 7.8.2 and strict shared versions remain unchanged.
+Production webpack disables module concatenation to preserve Angular identities
+across federation boundaries; the inherited optimized configuration failed at
+runtime with a missing defineInjectable export before this repair.
+Module Federation and ngx-build-plus retain inherited 20-series versions; builds
+and standalone verification do not prove every host combination compatible.
+
+## External contracts
+
+The installed @tmdjr/seed-service-nestjs-contracts 0.0.7 types define the consumer
+DTOs; backend validation defines accepted requests. The stateless API normalizes
+its base URL to /api/example-crud and encodes IDs once for detail paths.
+
+| Method | Browser path | Contract |
 | --- | --- | --- |
-| Bootstrap | `src/main.ts`, `src/bootstrap.ts` | Deferred bootstrap of standalone `App` |
-| Providers | `src/app/app.config.ts` | Zoneless change detection, animations, HttpClient, reactive forms |
-| Root | `src/app/app.ts` | Renders the example list; named and default `App` exports |
-| Routes | `src/app/app.routes.ts` | Named `Routes` export; empty path redirects to `hello-world` |
-| Federation | `webpack.config.js`, `webpack.prod.config.js` | Remote `ngx-seed-mfe`; `./Component` and `./Routes`; `remoteEntry.js` |
-| List/state | `src/app/components/example-mongodb-doc-list.component.ts` | Signals for documents, query, loading; computed local filtering |
-| Item view | `src/app/components/example-mongodb-doc.component.ts` | Display, edit/remove events, copy ID |
-| Dialog | `src/app/components/example-mongodb-doc-create-form-modal.component.ts` | Create/edit requests and dialog result |
-| Forms | `src/app/services/example-form.service.ts` | Typed form construction and request mapping |
-| HTTP | `src/app/services/example-crud-api.service.ts` | List, lookup, create, update, delete |
+| GET | /api/example-crud | ExampleMongodbDocDto[] |
+| GET | /api/example-crud/:id | ExampleMongodbDocDto |
+| POST | /api/example-crud | CreateExampleMongodbDocDto → document |
+| PATCH | /api/example-crud/:id | UpdateExampleMongodbDocDto → document |
+| DELETE | /api/example-crud/:id | void |
 
-The standalone bootstrap does not register `provideRouter`; the route array is
-also an integration export for a routing host. Do not assume loading a remote
-component automatically executes its standalone `appConfig` providers.
+The backend owns persistence/authorization. The seed contains no auth guard and
+does not fabricate credentials or backend behavior. Blank address fields omit
+the address property; PATCH then preserves an existing address. The published
+update DTO provides no null/removal field, so removing an address requires a
+producer contract change. Partial nonblank addresses are invalid locally.
 
-## Contract boundaries
+Host/registry owners are mfe-shell-workshop, mfe-shell-admin and
+service-mfe-orchestrator. Gateway owners map the browser API prefix to
+seed-service-nestjs. Package/shared metadata owners are independent repositories.
+No sibling checkout is needed; use local HTTP doubles when services are unavailable.
 
-| External owner | Interface this repository uses | When that owner is unavailable |
-| --- | --- | --- |
-| `mfe-shell-workshop` / `mfe-shell-admin` | `remoteEntry.js`, `./Component` (default `App`), `./Routes` (named `Routes`) | Validate exports/build locally; document host checks as unverified |
-| `service-mfe-orchestrator` and its admin UI | Registry metadata and session-local remote URL overrides | Record required entry/name/URL/route settings in the handoff |
-| `service-bff-ngx-workshop` / `nginx-ngx-workshop.io` | Browser-relative `/api/example-crud` routed to the backend | Mock HTTP in tests; request the actual gateway mapping if needed |
-| `seed-service-nestjs` | Published `@tmdjr/seed-service-nestjs-contracts` DTOs | Use installed types; document requested producer changes instead of fabricating fields |
-| `ngx-user-metadata` / platform auth | Shared `@tmdjr/ngx-user-metadata` package | Preserve singleton compatibility; this seed currently has no route guard |
-
-Repository names identify external owners, not relative filesystem dependencies.
-The frontend manifest pins the contracts package to `0.0.7`; do not assume a
-separately checked-out service manifest has the same version.
-
-### HTTP and data
-
-The intended browser boundary is `/api/example-crud`; service-native routes use
-`/example-crud`. The actual client base string currently has a trailing slash.
-See the development guide for the resulting detail-URL caveat.
-
-| Method | Browser path | Payload/result |
-| --- | --- | --- |
-| GET | `/api/example-crud/` | Array of `ExampleMongodbDocDto` |
-| GET | `/api/example-crud/:id` | One document |
-| POST | `/api/example-crud/` | `CreateExampleMongodbDocDto` → document |
-| PATCH | `/api/example-crud/:id` | Partial create DTO → document |
-| DELETE | `/api/example-crud/:id` | No response body |
-
-Documents include `_id`, `name`, `type`, `description`, `archived`, `version`,
-`lastUpdated`, and optional `exampleMongodbDocObject` address fields. Published
-types define the consumer contract; server validation defines accepted input.
-
-### Build and deployment
-
-The source uses Angular/Material/CDK `21.1.0`, RxJS `7.8.2`, and strict federation
-singletons. Module Federation and `ngx-build-plus` still use 20-series versions;
-that is an inherited configuration, not a blanket compatibility guarantee.
-
-`angular.json` outputs `dist/seed-mfe-remote`; local serving uses port 4201.
-The deployment workflow uses Node 22 and copies the bundle into
-`/opt/mfe-remotes/seed-mfe-remote/`. Pushes to `main` trigger deployment. Remote
-registration and gateway configuration are separate integration responsibilities.
+Build output remains dist/seed-mfe-remote. The existing deploy workflow targets
+/opt/mfe-remotes/seed-mfe-remote on main. Registration/gateway configuration and
+actual deployment are separate integration work; this change does not execute them.

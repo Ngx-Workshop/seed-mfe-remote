@@ -26,7 +26,20 @@ All links above resolve within this checkout. Do not assume a sibling repository
   into a new implementation or silently changing the intended behavior.
 - Keep the default `App` export, `Routes` export, federation exposures, and shared
   dependency compatibility intact unless the task includes changing that contract.
-- Keep API calls in services and use published contract types. Do not recreate a
+- Use feature folders under `src/app/features/<feature>`: api, models, state,
+  forms, utils, pages and components grouped by responsibility. Specs belong in
+  `testing/app`, mirroring production folders; runtime never imports testing.
+- Use MVVM: stateless API clients own HTTP; root singleton stores own shared server
+  state and data orchestration; scoped view models own view/form state. Components
+  orchestrate composition/lifecycle or present typed inputs and emit user intent.
+  Nested orchestration is allowed when it reflects distinct responsibilities.
+- Use standalone OnPush components with inline HTML/SCSS, BEM class names and shell
+  theme tokens. Aim for about 230 lines; document cohesive exceptions instead of
+  hiding code or splitting only for a line count.
+- Use switchMap for replaceable reads, concatMap for ordered writes when required,
+  exhaustMap for duplicate-sensitive commands and lifetime-bound subscriptions.
+- Run `npm run check:architecture` alongside appropriate tests/builds.
+- Keep API calls in stateless API clients and use published contract types. Do not recreate a
   backend or load another remote inside this remote to work around missing access.
 - Resolve routine implementation choices and record assumptions. Ask only for
   missing decisions that materially affect requirements or external compatibility;

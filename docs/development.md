@@ -1,67 +1,45 @@
 # Development and verification
 
-Run commands from this repository root. Use Node 22, matching CI, with a version
-supported by the installed Angular tools. Read `package.json`, the lockfile, and
-`angular.json` if requirements change. No other repository is needed to build;
-private/package registry access may still be needed to install dependencies.
-
-## Commands
+Use Node 22 (CI baseline) and the committed lockfile. Private registry access may
+be needed for npm ci; no sibling repository is required.
 
 | Purpose | Command | Notes |
 | --- | --- | --- |
-| Install | `npm ci` | Uses the committed lockfile |
-| Dev server | `npm start` | Port 4201; does not supply the backend API |
-| Shell integration loop | `npm run dev:bundle` | Production watch build plus CORS-enabled static serving; stop both processes when done |
-| Build | `npm run build` | Outputs `dist/seed-mfe-remote`, including federation entry |
-| Unit tests | `npm test -- --watch=false --browsers=ChromeHeadless` | Requires Chrome/Chromium available to Karma |
+| Install | `npm ci` | Uses existing dependency versions |
+| Architecture | `npm run check:architecture` | Folder/API/state/inline/BEM/typed-code guard; >230 component lines requests review |
+| Dev server | `npm start` | Port 4201; no backend supplied |
+| Local bundle | `npm run dev:bundle` | Production watch + static CORS server; avoid competing servers |
+| Build | `npm run build` | Production federation bundle |
+| Isolated build | `npm run build -- --output-path dist/starter-verification` | Avoid overwriting an existing watcher output |
+| Tests | `npm test -- --watch=false --browsers=ChromeHeadless` | HTTP doubles; set CHROME_BIN when needed |
+| Types | `npx tsc --noEmit --noUnusedLocals --noUnusedParameters -p tsconfig.app.json` | Source types/unused symbols |
 
-There is no lint script or configured end-to-end runner in this seed. Do not report
-them as completed checks. A static bundle server does not proxy `/api` calls.
-For standalone development, supply an explicit local API proxy/configuration or
-mock HTTP. For host integration, the documented platform workflow uses an
-Orchestrator dev-mode override to load `http://localhost:4201/remoteEntry.js` in
-your shell session. Record the chosen environment; use test data for mutations.
+Specs are under testing/app, mirroring src/app; synthetic DTOs live in
+testing/fixtures. See [testing guide](../testing/README.md) for focused commands.
 
-## Verification for implementations
+## Verification and automation
 
-1. Run the build after TypeScript/template/federation changes.
-2. Add or update focused behavior tests for affected forms, request mapping,
-   component state, and error handling. Mock external APIs; never require live
-   platform data for unit tests.
-3. For UI changes, check loading/empty/error/success states, keyboard navigation,
-   form validation, and a narrow viewport.
-4. For integration changes, inspect emitted `remoteEntry.js` and check consumption
-   through the host when available, including exports, providers, route mounting,
-   shared versions, and API requests. A local build alone cannot verify the host.
-5. Record actual commands/results and remaining limitations in the feature handoff.
+Architecture checks complement compiler/tests and do not replace full lint or code
+review. The lightweight script checks explicit source conventions, not every
+semantic dependency. CI runs architecture checks, ChromeHeadless tests and a
+production build. Deployment also runs the architecture guard before building.
+Auth/gateway/host integration must be verified separately with test records.
+No end-to-end framework or general-purpose lint dependency is introduced.
 
-For documentation-only changes, check paths, links, source accuracy, and whitespace;
-an application build is normally unnecessary.
+For UI changes inspect loading/empty/error/success states, keyboard form submission,
+validation, dialog retry and narrow layouts. Static bundle serving does not proxy
+/api; supply an explicit local gateway or synthetic fixtures. Host development
+uses the platform's session-local remote override for localhost:4201/remoteEntry.js.
+Standalone appConfig is not installed by host remote loading.
 
-## Known inherited limitations
+## Current limits and repaired starter defects
 
-These are source observations from 2026-09-29, not executed test results. Recheck
-before diagnosing failures. Fix them when relevant to the requested scope.
+The obsolete title test, component API coupling, missing subscription teardown,
+optimized Angular federation initialization, missing standalone Material theme,
+double-slash detail URLs, unsafe casts, partial-address acceptance and false/blank
+update omission are repaired. Save failures retain the editor and its values.
+The generated DTO does not support removing a stored address; blank address edits
+preserve it and the UI explains this. No auth policy, producer change, deployment
+or live-data test is part of this starter upgrade.
 
-- `src/app/app.spec.ts` expects `Hello, ngx-seed-mfe`, while the rendered list uses
-  `Example MongoDB Docs`. Its setup also lacks the HTTP test providers needed by
-  the child list's injected service. The scaffold is not a reliable green baseline.
-- `ExampleCrudApiService` ends its base URL with `/` and appends `/${id}`. Detail,
-  update, and delete requests therefore contain a double slash. Do not assume the
-  gateway normalizes it or copy it into a new client.
-- `ExampleFormService.toCreateDto` omits `archived: false` and blank descriptions.
-  The edit flow reuses this mapper, so it cannot reliably express resetting those
-  fields. Define create and patch semantics explicitly when changing forms.
-- Address inputs are optional individually in the form; the service contract
-  requires all four nonempty strings when an address object is supplied. A
-  partially filled address needs explicit validation behavior.
-- Dialog errors currently close the dialog without detailed feedback. Several
-  `any` casts remain. These are example-code limitations, not preferred patterns.
-- The source has no authentication route guard or standalone router provider.
-  The shared metadata package being present does not supply those automatically.
-
-## Keep the context accurate
-
-Update architecture docs after changing exposures, routes, DTO usage, or ownership.
-Update this guide after changing scripts or resolving a listed limitation. Update
-the source-baseline date/reference when rechecking those facts.
+See [001 handoff](../specs/001-mvvm-starter/handoff.md) for actual results and limits.
