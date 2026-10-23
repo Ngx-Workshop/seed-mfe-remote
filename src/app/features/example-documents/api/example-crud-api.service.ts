@@ -12,7 +12,9 @@ export class ExampleCrudApiService {
   private readonly http = inject(HttpClient);
   private readonly baseUrl = '/api/example-crud';
 
-  list$() { return this.http.get<ExampleMongodbDocDto[]>(this.baseUrl); }
+  list$() {
+    return this.http.get<ExampleMongodbDocDto[]>(this.baseUrl);
+  }
   getById$(id: string) {
     return this.http.get<ExampleMongodbDocDto>(this.url(id));
   }
@@ -22,6 +24,10 @@ export class ExampleCrudApiService {
   update$(id: string, patch: UpdateExampleMongodbDocDto) {
     return this.http.patch<ExampleMongodbDocDto>(this.url(id), patch);
   }
-  delete$(id: string) { return this.http.delete<void>(this.url(id)); }
-  private url(id: string) { return `${this.baseUrl}/${encodeURIComponent(id)}`; }
+  delete$(id: string) {
+    return this.http.delete<void>(this.url(id));
+  }
+  private url(id: string) {
+    return `${this.baseUrl}/${encodeURIComponent(id)}`;
+  }
 }

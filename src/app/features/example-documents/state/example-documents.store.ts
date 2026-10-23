@@ -1,11 +1,26 @@
-import { DestroyRef, Injectable, computed, inject, signal } from '@angular/core';
+import {
+  DestroyRef,
+  Injectable,
+  computed,
+  inject,
+  signal,
+} from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import {
-  EMPTY, Observable, Subject, catchError, defer, finalize, switchMap, tap,
+  EMPTY,
+  Observable,
+  Subject,
+  catchError,
+  defer,
+  finalize,
+  switchMap,
+  tap,
 } from 'rxjs';
 import { ExampleCrudApiService } from '../api/example-crud-api.service';
 import type {
-  CreateExampleMongodbDocDto, ExampleMongodbDocDto, UpdateExampleMongodbDocDto,
+  CreateExampleMongodbDocDto,
+  ExampleMongodbDocDto,
+  UpdateExampleMongodbDocDto,
 } from '../models/example-document.models';
 import { apiError } from '../utils/api-error';
 
@@ -24,37 +39,45 @@ export class ExampleDocumentsStore {
   readonly mutating = computed(() => this.pending() > 0);
 
   constructor() {
-    this.reloads.pipe(
-      switchMap(() => defer(() => {
-        this.loadingState.set(true);
-        this.errorState.set('');
-        return this.api.list$().pipe(
-          tap(documents => this.records.set(documents)),
-          catchError(error => {
-            this.errorState.set(apiError(error));
-            return EMPTY;
-          }),
-          finalize(() => this.loadingState.set(false)),
-        );
-      })),
-      takeUntilDestroyed(inject(DestroyRef)),
-    ).subscribe();
+    this.reloads
+      .pipe(
+        switchMap(() =>
+          defer(() => {
+            this.loadingState.set(true);
+            this.errorState.set('');
+            return this.api.list$().pipe(
+              tap((documents) => this.records.set(documents)),
+              catchError((error) => {
+                this.errorState.set(apiError(error));
+                return EMPTY;
+              }),
+              finalize(() => this.loadingState.set(false))
+            );
+          })
+        ),
+        takeUntilDestroyed(inject(DestroyRef))
+      )
+      .subscribe();
   }
-  reload() { this.reloads.next(); }
+  reload() {
+    this.reloads.next();
+  }
   create(dto: CreateExampleMongodbDocDto) {
     return this.mutate(() => this.api.create$(dto));
   }
   update(id: string, patch: UpdateExampleMongodbDocDto) {
     return this.mutate(() => this.api.update$(id, patch));
   }
-  remove(id: string) { return this.mutate(() => this.api.delete$(id)); }
+  remove(id: string) {
+    return this.mutate(() => this.api.delete$(id));
+  }
 
   private mutate<T>(request: () => Observable<T>): Observable<T> {
     return defer(() => {
-      this.pending.update(count => count + 1);
+      this.pending.update((count) => count + 1);
       return request().pipe(
         tap(() => this.reload()),
-        finalize(() => this.pending.update(count => count - 1)),
+        finalize(() => this.pending.update((count) => count - 1))
       );
     });
   }
