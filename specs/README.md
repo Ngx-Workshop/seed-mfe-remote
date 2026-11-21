@@ -15,3 +15,5 @@ below with relative links. A feature folder contains `spec.md`, `plan.md`,
 Keep one row per feature, retain completed records for rationale, and update
 status when work changes. Select work from the user's request and this index;
 the largest folder number is not automatically the active feature.
+
+- [002-static-deployment-cleanup](002-static-deployment-cleanup/spec.md): Static deployment cleanup; helper verified, Actions rollout pending.
